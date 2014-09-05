@@ -27,7 +27,7 @@
             ((UIScrollView *)subview).bounces = NO;
     [_controlView.layer setCornerRadius:6];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToURLNotification:) name:@"FSMirrorURLPath" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToURLNotification:) name:@"FSMirrorNotificationURLPath" object:nil];
 }
 
 - (void)dealloc

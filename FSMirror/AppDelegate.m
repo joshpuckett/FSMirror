@@ -20,7 +20,7 @@
     NSString *urlString = [url absoluteString];
     NSString *path = [urlString substringFromIndex:NSMaxRange([urlString rangeOfString:@"://"])];
     NSDictionary *pathUserInfo = @{ @"path" : path };
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"FSMirrorURLPath" object:nil userInfo:pathUserInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FSMirrorNotificationURLPath" object:nil userInfo:pathUserInfo];
     return YES;
 }
 
