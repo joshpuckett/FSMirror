@@ -41,21 +41,13 @@
     if(path != nil) {
         [_controlView setHidden:!_controlView.hidden];
         self.urlField.text = path;
-        [self textFieldReturn:nil];
+        [self loadURI];
     }
 }
 
 -(IBAction)textFieldReturn:(id)sender
 {
-    NSString *fieldUrl = self.urlField.text;
-    NSString *combinedUrl = [NSString stringWithFormat:@"%@%@", @"http://", fieldUrl];
-    NSLog(@"%@", combinedUrl);
-
-    int len = (int)[fieldUrl length];
-    if (len != 0) {
-        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:combinedUrl]]];
-        _controlView.hidden = YES;
-    }
+    [self loadURI];
     [sender resignFirstResponder];
 }
 
@@ -65,10 +57,24 @@
 
 - (IBAction)refreshBtnTapped:(UIButton *)sender {
     [_controlView setHidden:!_controlView.hidden];
-    [self textFieldReturn:nil];
+    [self loadURI];
+}
+
+- (void)loadURI
+{
+    NSString *fieldUrl = self.urlField.text;
+    NSString *combinedUrl = [NSString stringWithFormat:@"%@%@", @"http://", fieldUrl];
+    NSLog(@"%@", combinedUrl);
+    
+    int len = (int)[fieldUrl length];
+    if (len != 0) {
+        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:combinedUrl]]];
+        _controlView.hidden = YES;
+    }
 }
 
 
+#pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
     return YES;
