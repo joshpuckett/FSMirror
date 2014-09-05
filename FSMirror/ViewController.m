@@ -47,8 +47,8 @@
 }
 
 - (IBAction)refreshBtnTapped:(UIButton *)sender {
-    [self.webView reload];
     [_controlView setHidden:!_controlView.hidden];
+    [self textFieldReturn:nil];
 }
 
 
