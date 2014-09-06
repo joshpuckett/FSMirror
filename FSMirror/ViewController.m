@@ -41,13 +41,13 @@
     if(path != nil) {
         [_controlView setHidden:!_controlView.hidden];
         self.urlField.text = path;
-        [self loadURI];
+        [self loadURL];
     }
 }
 
 -(IBAction)textFieldReturn:(id)sender
 {
-    [self loadURI];
+    [self loadURL];
     [sender resignFirstResponder];
 }
 
@@ -57,15 +57,15 @@
 
 - (IBAction)refreshBtnTapped:(UIButton *)sender {
     [_controlView setHidden:!_controlView.hidden];
-    [self loadURI];
+    [self loadURL];
 }
 
-- (void)loadURI
+- (void)loadURL
 {
     NSString *fieldUrl = self.urlField.text;
     NSString *combinedUrl = [NSString stringWithFormat:@"%@%@", @"http://", fieldUrl];
     NSLog(@"%@", combinedUrl);
-    
+
     int len = (int)[fieldUrl length];
     if (len != 0) {
         [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:combinedUrl]]];
