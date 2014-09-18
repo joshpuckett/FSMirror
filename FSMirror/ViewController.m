@@ -26,9 +26,41 @@
         if ([[subview class] isSubclassOfClass: [UIScrollView class]])
             ((UIScrollView *)subview).bounces = NO;
     [_controlView.layer setCornerRadius:6];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToURLNotification:) name:@"FSMirrorNotificationURLPath" object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)respondToURLNotification:(NSNotification *)notification
+{
+    NSString *path = (NSString *)[notification.userInfo valueForKey:@"path"];
+    if(path != nil) {
+        [_controlView setHidden:!_controlView.hidden];
+        self.urlField.text = path;
+        [self loadURL];
+    }
 }
 
 -(IBAction)textFieldReturn:(id)sender
+{
+    [self loadURL];
+    [sender resignFirstResponder];
+}
+
+- (IBAction) doubleTapped:(UITapGestureRecognizer *)gesture {
+    [_controlView setHidden:!_controlView.hidden];
+}
+
+- (IBAction)refreshBtnTapped:(UIButton *)sender {
+    [_controlView setHidden:!_controlView.hidden];
+    [self loadURL];
+}
+
+- (void)loadURL
 {
     NSString *fieldUrl = self.urlField.text;
     NSString *combinedUrl = [NSString stringWithFormat:@"%@%@", @"http://", fieldUrl];
@@ -39,19 +71,10 @@
         [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:combinedUrl]]];
         _controlView.hidden = YES;
     }
-    [sender resignFirstResponder];
-}
-
-- (IBAction) doubleTapped:(UITapGestureRecognizer *)gesture {
-    [_controlView setHidden:!_controlView.hidden];
-}
-
-- (IBAction)refreshBtnTapped:(UIButton *)sender {
-    [self.webView reload];
-    [_controlView setHidden:!_controlView.hidden];
 }
 
 
+#pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
     return YES;
